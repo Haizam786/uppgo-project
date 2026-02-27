@@ -1,0 +1,43 @@
+{
+    
+    "dashboard": "Dashboard",
+    "sales": "Sales",
+    "analytics": "Analytics",
+    "apps": "Apps",
+    "components": "Components",
+    "elements": "Elements",
+    "font_icons": "Font Icons",
+    "widgets": "Widgets",
+    "tables": "Tables",
+    "datatables": "Data Tables",
+    "forms": "Forms",
+    "users": "Users",
+    "pages": "Pages",
+    "authentication": "Authentication",
+    "drag_and_drop": "Drag and Drop",
+    "maps": "Maps",
+    "charts": "Charts",
+    "starter_kit": "Starter Kit",
+    "documentation": "Documentation",
+    "ui_kit": "UI Kit",
+    "more": "More",
+    "admin":"Admin",
+
+    "student":"Student",
+    "create":"create",
+    "view":"view",
+    "parent":"Parent",
+    "profile":"Profile",
+    "assign_student":"Assign Student",
+    "progress":"Progress",
+    "attendance":"Attendance",
+
+    "notification":"Notification",
+    "dark":"Dark",
+    "light":"Light",
+    "system":"System",
+    "invoice_sent":"Invoice sent",
+    "log_out":"Log Out",
+    "recent_activities":"Recent Activities"
+ 
+}
