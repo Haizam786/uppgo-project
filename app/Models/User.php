@@ -19,24 +19,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+
         'name',
-        'address',
-        'telephone',
-        'age',
-        'gender',
-        'dob',
         'email',
-        'email_verified_at',
         'password',
-        'remember_token',
-        'created_at',
-        'updated_at',
-        'image_path',
+        'user_category',
         'active',
         'deleted',
-        'type',
-        'country_code',
-        'enrolment_number',
     ];
 
     /**
@@ -56,15 +45,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
+        'deleted' => 'boolean',
     ];
 
-    public function studentProgressReports(): HasMany
+
+    public function nations()
     {
-        return $this->hasMany(ProgressReport::class, 'users_id')->where('type', 'Student');
+        return $this->belongsToMany(Nation::class);
     }
-    
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class, 'user_id');
-    }
+
+
+    // public function notifications(): HasMany
+    // {
+    //     return $this->hasMany(Notification::class, 'user_id');
+    // }
 }

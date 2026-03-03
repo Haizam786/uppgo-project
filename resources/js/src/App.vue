@@ -12,8 +12,8 @@
 
     export default {
         metaInfo: {
-            title: 'Admin',
-            titleTemplate: '%s | Attendance System'
+            title: 'User',
+            titleTemplate: '%s | Dashboard'
         },
         components: {
             app: appLayout,

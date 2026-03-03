@@ -41,7 +41,7 @@ Route::get('/profile', function () {
 });
 
 //Auth routes
-Auth::routes(['register' => false]);
+Auth::routes(['register' => true]);
 
 
 

@@ -9,7 +9,7 @@
          <meta name="user_id" content="{{ Auth::user()->id }}" />
     @endif
 
-    <title>Cork - Vuejs, HTML & Laravel Admin Dashboard Template</title>
+    <title>UppGO</title>
 
     <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 

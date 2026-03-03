@@ -39,9 +39,14 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticated(Request $request, $user)
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     // Set user type in session after successful login
+    //     session(['user_type' => $user->type]);
+    // }
+
+        protected function authenticated(Request $request, $user)
     {
-        // Set user type in session after successful login
-        session(['user_type' => $user->type]);
+        session(['user_category' => $user->user_category]);
     }
 }
