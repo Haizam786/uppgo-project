@@ -27,7 +27,7 @@
                 </router-link>
 
                 <!-- Admins -->
-                <li class="menu"  v-if="logged_user.type == 'Super Admin'">
+                <li class="menu"  v-if="logged_user.role == 'admin'">
                     <a href="#admins" v-b-toggle class="dropdown-toggle" @click.prevent>
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -50,7 +50,7 @@
                     </a>
                     <b-collapse id="admins" accordion="menu">
                         <ul class="collapse submenu list-unstyled show">
-                            <li v-if="logged_user.type == 'Super Admin'">
+                            <li v-if="logged_user.type == 'admin'">
                                 <router-link tag="li" to="/admin/create"
                                     @click.native="toggleMobileMenu"><a>{{ $t('create') }}</a></router-link>
                             </li>
@@ -70,7 +70,7 @@
 
 
                 <!-- Profile -->
-                <router-link tag="li" to="/profile" class="menu" @click.native="toggleMobileMenu" v-if="logged_user.type == 'Super Admin'">
+                <router-link tag="li" to="/profile" class="menu" @click.native="toggleMobileMenu" v-if="logged_user.role == 'user'">
                     <a class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -142,7 +142,7 @@ export default {
             }
         }
 
-        this.fetchAdmin();
+        this.fetchAllUsers();
     },
 
     methods: {
@@ -152,17 +152,17 @@ export default {
             }
         },
 
-        //Fetch all the admin users from the database
-        fetchAdmin() {
-            axios.get("/admin/fetch/admin")
+        //Fetch all the  users from the database
+        fetchAllUsers() {
+            axios
+                .get("/admin/fetch/user")
                 .then((res) => {
                     if (res.status == 200) {
                         this.admins = res.data;
                         for (let i = 0; i < this.admins.length; i++) {
                             if (this.admins[i].id == this.user_id) {
-                                this.logged_user = this.admins[i];
-                                this.userType = this.logged_user.type; // Set user type
-                                return;
+                                this.logged_user = this.admins[i]
+                                return
                             }
                         }
                     }

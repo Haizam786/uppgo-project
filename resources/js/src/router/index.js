@@ -10,33 +10,37 @@ const routes = [
     { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
     //admin users
+    // {
+    //     path: '/user/create',
+    //     name: 'create-user',
+    //     component: () =>
+    //         import ( /* webpackChunkName: "users-profile" */ '../views/user/CreateUsers.vue')
+    // },
     {
-        path: '/admin/create',
-        name: 'create-admin',
-        component: () => import(/* webpackChunkName: "users-profile" */ '../views/admin/CreateAdmins.vue')
-    },
-    {
-        path: '/admin/view',
-        name: 'view-admin',
-        component: () => import(/* webpackChunkName: "users-account-setting" */ '../views/admin/ViewAdmins.vue')
+        path: '/user/view',
+        name: 'view-user',
+        component: () =>
+            import ( /* webpackChunkName: "users-account-setting" */ '../views/user/ViewUsers.vue')
     },
 
-    
 
-  
+
+
 
     //Organisation Profile
     {
         path: '/profile',
         name: 'organisation-profile',
-        component: ()=> import('../views/organisation-profile/OrganisationProfile.vue')
+        component: () =>
+            import ('../views/organisation-profile/OrganisationProfile.vue')
     },
 
     //scan-qr
     {
         path: '/scan-qr',
         name: 'scan-qr-cod',
-        component: ()=> import('../views/qr/QRScanner.vue')
+        component: () =>
+            import ('../views/qr/QRScanner.vue')
     },
 
 ];

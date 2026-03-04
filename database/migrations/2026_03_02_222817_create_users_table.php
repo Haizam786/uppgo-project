@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('user_category', ['nation', 'non_nation']);
+            $table->string('image_path')->nullable();
             $table->boolean('active')->default(1);
             $table->boolean('deleted')->default(0);
             $table->rememberToken();

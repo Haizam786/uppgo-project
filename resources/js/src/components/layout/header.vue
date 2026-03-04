@@ -718,7 +718,7 @@ export default {
         };
     },
     mounted() {
-        this.fetchAdmin();
+        this.fetchUser();
         this.fetchOrganisations();
         this.fetchActivites();
         this.fetchMailLogs();
@@ -785,9 +785,9 @@ export default {
         },
 
         //Fetch all the admin users from the database
-        fetchAdmin() {
+        fetchUser() {
             axios
-                .get("/admin/fetch/admin")
+                .get("/admin/fetch/user")
                 .then((res) => {
                     if (res.status == 200) {
                         this.admins = res.data;
