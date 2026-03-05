@@ -281,8 +281,8 @@ export default {
             this.image_url = null;
         },
 
-        //function to populate the edit model
-        setToUpdate(id, name, bank_name, account_no, swift_code, country, email, address, telephone) {
+        
+        setToUpdate(id, name, email, address, telephone) {
             this.edit_id = id;
             this.edit_name = name;
 
@@ -292,7 +292,7 @@ export default {
             this.image_url = null;
         },
 
-        //image click proccess and image preview
+        
         onImageChange(e) {
             this.logo = e.target.files[0];
             this.image_url = URL.createObjectURL(this.logo);
@@ -374,7 +374,7 @@ export default {
                 })
                 .catch((err) => {
                     if (err.response && err.response.status == 422) {
-                        // if backend returns validation errors
+                        
                         const ve = err.response.data.errors || {};
                         if (ve.password) this.passwordError = ve.password[0];
                         if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
