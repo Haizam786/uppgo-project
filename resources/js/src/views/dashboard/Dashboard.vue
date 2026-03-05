@@ -7,7 +7,8 @@
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="javascript:;">{{ $t('dashboard') }}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span>{{ $t('view') }}</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span>{{ $t('view') }}</span>
+                                </li>
                             </ol>
                         </nav>
                     </div>
@@ -29,7 +30,7 @@
                 </div>
             </div> -->
 
-            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-sales-category">
                     <div class="widget-heading">
                         <h5>User Counts</h5>
@@ -39,10 +40,10 @@
                             :series="sales_donut_series"></apexchart>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
-            <div class="col-xl-8 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-recent-activity">
                     <div class="widget-heading">
                         <h5>Recent Activities</h5>
@@ -52,7 +53,8 @@
                             <div v-for="activity in activities" class="item-timeline timeline-success">
                                 <div class="badge badge-success"></div>
                                 <div class="t-text">
-                                    <p>{{ activity.activity }} <a href="javascript:void(0);"> {{ activity.user_name }}</a>
+                                    <p>{{ activity.activity }} <a href="javascript:void(0);"> {{ activity.user_name
+                                            }}</a>
                                     </p>
                                     <b-badge
                                         variant="outline-success outline-badge-success icon-fill-success">Completed</b-badge>
@@ -164,8 +166,8 @@
                                         <div class="td-content">
                                             <!-- <img v-if="order.customer_image"
                                                 :src="'/storage/customers/' + order.customer_image" alt="avatar" /> -->
-                                            <!-- <img src="@/assets/images/dummy_profile.png" alt="avatar" /> -->
-                                            <!-- <span>{{ order.customer_name }}</span>
+            <!-- <img src="@/assets/images/dummy_profile.png" alt="avatar" /> -->
+            <!-- <span>{{ order.customer_name }}</span>
                                         </div>
                                     </b-td>
                                     <b-td>
@@ -180,9 +182,9 @@
                         </b-table-simple>
                     </div>
                 </div>
-            </div> --> 
+            </div> -->
 
-            
+
         </div>
     </div>
 </template>
@@ -692,44 +694,44 @@ export default {
 </script>
 
 <style scoped>
-  /* Add styles for the new widget */
-  .widget-parent-students {
+/* Add styles for the new widget */
+.widget-parent-students {
     background-color: #fff;
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .widget-parent-students .widget-heading h5 {
+.widget-parent-students .widget-heading h5 {
     color: #333;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 10px;
-  }
+}
 
-  .widget-parent-students .widget-content .student-list {
+.widget-parent-students .widget-content .student-list {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
+}
 
-  .widget-parent-students .widget-content .student-list li {
+.widget-parent-students .widget-content .student-list li {
     margin-bottom: 15px;
-  }
+}
 
-  .widget-parent-students .widget-content .student-list .student-name {
+.widget-parent-students .widget-content .student-list .student-name {
     font-size: 16px;
     font-weight: 500;
     margin-right: 10px;
-  }
+}
 
-  .widget-parent-students .widget-content .student-list .enrolment-number {
+.widget-parent-students .widget-content .student-list .enrolment-number {
     font-size: 14px;
     color: #777;
-  }
+}
 
-  .widget-recent-activity .widget-content .student-list li {
+.widget-recent-activity .widget-content .student-list li {
     margin-bottom: 15px;
     margin-right: 30px;
     padding: 10px;
@@ -742,16 +744,17 @@ export default {
 .widget-recent-activity .widget-content .student-list .dot-icon {
     width: 10px;
     height: 10px;
-    background-color: #000; /* Adjust the color as needed */
+    background-color: #000;
+    /* Adjust the color as needed */
     border-radius: 50%;
     margin-right: 10px;
-  }
+}
 
-  .widget-recent-activity .widget-content .student-list .student-name {
+.widget-recent-activity .widget-content .student-list .student-name {
     flex-grow: 1;
-  }
+}
 
 .widget-recent-activity .widget-content .student-list .enrolment-number {
     font-weight: bold;
-  }
+}
 </style>

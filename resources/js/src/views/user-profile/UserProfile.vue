@@ -114,26 +114,29 @@
 
                             <div class="row m-2">
                                 <label for="org_name">{{ $t('User Name') }}</label>
-                                <input id="org_name" type="text"
-                                    :class="errors.name ? 'form-control is-invalid' : 'form-control'"
-                                    placeholder="First Name" v-model="edit_name" />
+                                <input id="org_name" type="text" class="form-control" v-model="edit_name" readonly
+                                    style="background-color: #f1f2f3; cursor: not-allowed;" />
                                 <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
                             </div>
 
                             <div class="row m-2">
                                 <label for="input_profile_email">{{ $t('email') }}</label>
-                                <input id="input_profile_email" type="email"
-                                    :class="errors.address ? 'form-control is-invalid' : 'form-control'"
-                                    v-model="edit_email" autocomplete="off" />
+                                <input id="input_profile_email" type="email" class="form-control" v-model="edit_email"
+                                    autocomplete="off" readonly
+                                    style="background-color: #f1f2f3; cursor: not-allowed;" />
                                 <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
                             </div>
 
                             <div class="row m-2">
                                 <label for="new_password">New Password</label>
                                 <input id="new_password" type="password" class="form-control" v-model="edit_password"
-                                    placeholder="Enter new password" autocomplete="new-password" />
+                                    placeholder="Enter new password" autocomplete="new-password" @keyup="checkCapsLock"
+                                    @keydown="checkCapsLock" @blur="capsLockOn = false" />
                                 <small class="text-muted">
-                                    Must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.
+                                    Must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.
+                                </small>
+                                <small v-if="capsLockOn" class="text-warning d-block">
+                                    Caps Lock is ON
                                 </small>
                                 <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
                             </div>
@@ -142,14 +145,18 @@
                                 <label for="confirm_password">Confirm Password</label>
                                 <input id="confirm_password" type="password" class="form-control"
                                     v-model="edit_password_confirmation" placeholder="Confirm new password"
-                                    autocomplete="new-password" />
+                                    autocomplete="new-password" @keyup="checkCapsLock" @keydown="checkCapsLock"
+                                    @blur="capsLockOn = false" />
+                                <small v-if="capsLockOn" class="text-warning d-block">
+                                    Caps Lock is ON
+                                </small>
                                 <small v-if="confirmPasswordError" class="text-danger">
                                     {{ confirmPasswordError }}
                                 </small>
                             </div>
 
                             <div class="row m-2">
-                                <label for="input_file_image_customer">{{ $t('logo') }}</label>
+                                <label for="input_file_image_customer">{{ $t('Profile Image') }}</label>
                                 <input id="input_file_image_customer" type="file" class="form-control"
                                     @change="onImageChange" />
                             </div>
@@ -234,13 +241,9 @@ export default {
 
             edit_id: null,
             edit_name: null,
-            // edit_bank_name: null,
-            // edit_account_no: null,
-            // edit_swift_code: null,
-            // edit_country: null,
+
             edit_email: null,
-            // edit_address: null,
-            // edit_telephone: null,
+
             edit_logo: null,
 
             edit_password: "",
@@ -248,19 +251,19 @@ export default {
             passwordError: "",
             confirmPasswordError: "",
             user_id: this.$userId,
+            capsLockOn: false,
 
         };
     },
 
     mounted() {
         this.fetchMyProfile();
-       
         this.fetchActivites();
     },
     methods: {
 
 
-        //Fetch all activities details from db
+
         fetchActivites() {
             axios
                 .get("/admin/fetch/activities")
@@ -282,8 +285,7 @@ export default {
             this.edit_password_confirmation = "";
             this.passwordError = "";
             this.confirmPasswordError = "";
-
-
+            this.capsLockOn = false;
         },
 
 
@@ -324,173 +326,106 @@ export default {
             reader.readAsDataURL(file);
         },
 
-        //Edit a user
-        // editProfile() {
-        //     this.passwordError = "";
-        //     this.confirmPasswordError = "";
 
-        //     const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
+        editProfile() {
+            this.passwordError = "";
+            this.confirmPasswordError = "";
 
-        //     if (wantsPasswordChange) {
-        //         this.passwordError = this.validatePasswordRules(this.edit_password);
-        //         if (this.passwordError) return;
+            const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
 
-        //         if (this.edit_password !== this.edit_password_confirmation) {
-        //             this.confirmPasswordError = "Passwords do not match.";
-        //             return;
-        //         }
-        //     }
+            if (wantsPasswordChange) {
+                this.passwordError = this.validatePasswordRules(this.edit_password);
+                if (this.passwordError) return;
 
-
-        //     const payload = {
-        //         id: this.user_id,
-        //         logo: this.logo,
-        //     };
-
-        //     if (wantsPasswordChange) {
-        //         payload.password = this.edit_password;
-        //         payload.password_confirmation = this.edit_password_confirmation;
-        //     }
-
-        //     axios.put("/admin/update/user", payload)
-        //         .then((res) => {
-        //             console.log("UPDATE RESPONSE:", res.status, res.data);
-
-        //             const ok = res.status === 200 && res.data && res.data.success === true;
-
-        //             if (ok) {
-        //                 if (res.data.image_url) {
-        //                     this.myProfile.image_url = res.data.image_url;
-        //                     this.image_url = res.data.image_url;
-        //                 }
-
-        //                 $("#edit_cancel").click();
-
-
-        //                 this.edit_password = "";
-        //                 this.edit_password_confirmation = "";
-
-        //                 this.reset();
-        //                 this.fetchMyProfile();
-        //                 this.fetchOrganisations();
-
-        //                 Swal.fire({
-        //                     icon: "success",
-        //                     title: this.$t("Successfully_Updated"),
-        //                     showConfirmButton: false,
-        //                     timer: 1500,
-        //                 });
-        //             } else {
-        //                 Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
-        //             }
-        //         })
-        //         .catch((err) => {
-        //             if (err.response && err.response.status === 422) {
-        //                 const ve = err.response.data.errors || {};
-        //                 if (ve.password) this.passwordError = ve.password[0];
-        //                 if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
-        //             }
-
-        //             Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
-        //         });
-
-        // },
-editProfile() {
-    this.passwordError = "";
-    this.confirmPasswordError = "";
-
-    const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
-
-    if (wantsPasswordChange) {
-        this.passwordError = this.validatePasswordRules(this.edit_password);
-        if (this.passwordError) return;
-
-        if (this.edit_password !== this.edit_password_confirmation) {
-            this.confirmPasswordError = "Passwords do not match.";
-            return;
-        }
-    }
-
-    const payload = {
-        id: this.user_id,
-        logo: this.logo,
-    };
-
-    if (wantsPasswordChange) {
-        payload.password = this.edit_password;
-        payload.password_confirmation = this.edit_password_confirmation;
-    }
-
-    axios.put("/admin/update/user", payload)
-        .then((res) => {
-            console.log("UPDATE RESPONSE:", res.status, res.data);
-
-            const ok = res.status === 200 && res.data && res.data.success === true;
-            console.log("OK VALUE:", ok);
-
-            if (ok) {
-                if (res.data.image_url) {
-                    this.myProfile.image_url = res.data.image_url;
-                    this.image_url = res.data.image_url;
+                if (this.edit_password !== this.edit_password_confirmation) {
+                    this.confirmPasswordError = "Passwords do not match.";
+                    return;
                 }
+            }
 
-                $("#edit_cancel").click();
+            const payload = {
+                id: this.user_id,
+                logo: this.logo,
+            };
 
-                this.reset();
-                this.fetchMyProfile();
-              
+            if (wantsPasswordChange) {
+                payload.password = this.edit_password;
+                payload.password_confirmation = this.edit_password_confirmation;
+            }
 
-                Swal.fire({
-                    icon: "success",
-                    title: this.$t("Successfully_Updated"),
-                    showConfirmButton: false,
-                    timer: 1500,
+            axios.put("/admin/update/user", payload)
+                .then((res) => {
+                    console.log("UPDATE RESPONSE:", res.status, res.data);
+
+                    const ok = res.status === 200 && res.data && res.data.success === true;
+                    console.log("OK VALUE:", ok);
+
+                    if (ok) {
+                        if (res.data.image_url) {
+                            this.myProfile.image_url = res.data.image_url;
+                            this.image_url = res.data.image_url;
+                        }
+
+                        $("#edit_cancel").click();
+
+                        this.reset();
+                        this.fetchMyProfile();
+
+
+                        Swal.fire({
+                            icon: "success",
+                            title: this.$t("Successfully_Updated"),
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+
+                        return;
+                    }
+
+                    Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+                })
+                .catch((err) => {
+                    console.log("CATCH BLOCK RUNNING", err);
+
+                    if (err.response && err.response.status === 422) {
+                        const ve = err.response.data.errors || {};
+                        if (ve.password) this.passwordError = ve.password[0];
+                        if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
+                    }
+
+                    Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
                 });
-
-                return;
-            }
-
-            Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
-        })
-        .catch((err) => {
-            console.log("CATCH BLOCK RUNNING", err);
-
-            if (err.response && err.response.status === 422) {
-                const ve = err.response.data.errors || {};
-                if (ve.password) this.passwordError = ve.password[0];
-                if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
-            }
-
-            Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
-        });
-},
+        },
         validatePasswordRules(password) {
-
             const uppercaseCount = (password.match(/[A-Z]/g) || []).length;
-
             const digitCount = (password.match(/[0-9]/g) || []).length;
-
             const symbolCount = (password.match(/[^A-Za-z0-9]/g) || []).length;
 
-            if (uppercaseCount < 1) return "Password must contain at least 1 uppercase letter.";
+            if (password.length < 8) return "Password must be at least 8 characters.";
+            if (uppercaseCount < 2) return "Password must contain at least 2 uppercase letters.";
             if (digitCount < 2) return "Password must contain at least 2 numbers.";
             if (symbolCount < 2) return "Password must contain at least 2 symbols.";
             return "";
         },
 
+        checkCapsLock(event) {
+            if (event && typeof event.getModifierState === "function") {
+                this.capsLockOn = event.getModifierState("CapsLock");
+            }
+        },
+
         onEditModalShow() {
-            // clear passwords before modal renders
             this.edit_password = "";
             this.edit_password_confirmation = "";
             this.passwordError = "";
             this.confirmPasswordError = "";
+            this.capsLockOn = false;
 
-            // clear upload preview
             this.logo = null;
 
-            // load profile data
             this.fetchMyProfile();
         },
+
         fetchMyProfile() {
             axios.get("/admin/fetch/user?me=1")
                 .then((res) => {

@@ -128,13 +128,13 @@ class UserController extends Controller
                 'string',
                 'min:8',
                 'confirmed',
-                'regex:/^(?=(?:.*[A-Z]){1,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).*$/',
+               'regex:/^(?=(?:.*[A-Z]){2,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).{8,}$/',
             ],
 
 
             'logo' => ['nullable', 'string'],
         ], [
-            'password.regex' => 'Password must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.',
+            'password.regex' => 'Password must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.',
         ]);
 
         $id = (int) $request->id;

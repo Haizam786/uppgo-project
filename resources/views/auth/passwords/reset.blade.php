@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}" onsubmit="return validatePassword()">
+                    <form method="POST" action="{{ route('password.update') }}" onsubmit="return validatePassword()" autocomplete="off">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
@@ -39,21 +39,21 @@
                                     type="password"
                                     class="form-control @error('password') is-invalid @enderror"
                                     name="password"
-                                    required autocomplete="new-password"
-                                    onkeyup="checkPasswordRules()">
+                                    required
+                                    autocomplete="new-password"
+                                    onkeyup="checkPasswordRules(event); checkConfirmPassword();"
+                                    onkeydown="checkPasswordRules(event)"
+                                    onblur="hideCapsLockWarning()">
 
                                 <small class="text-muted">
-                                    Must contain:
-                                    1 uppercase letter,
-                                    2 numbers,
-                                    2 symbols,
-                                    minimum 5 characters.
+                                    Must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.
                                 </small>
 
-                                <small id="passwordError" class="text-danger"></small>
+                                <small id="capsLockWarning" class="text-warning d-block"></small>
+                                <small id="passwordError" class="text-danger d-block"></small>
 
                                 @error('password')
-                                <span class="invalid-feedback">
+                                <span class="invalid-feedback d-block">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
@@ -68,10 +68,13 @@
                                     type="password"
                                     class="form-control"
                                     name="password_confirmation"
-                                    required autocomplete="new-password"
-                                    onkeyup="checkConfirmPassword()">
+                                    required
+                                    autocomplete="new-password"
+                                    onkeyup="checkConfirmPassword(); checkCapsLock(event);"
+                                    onkeydown="checkCapsLock(event)"
+                                    onblur="hideCapsLockWarning()">
 
-                                <small id="confirmError" class="text-danger"></small>
+                                <small id="confirmError" class="text-danger d-block"></small>
                             </div>
                         </div>
 
@@ -90,7 +93,23 @@
 </div>
 
 <script>
-    function checkPasswordRules() {
+    function checkCapsLock(event) {
+        const capsWarning = document.getElementById("capsLockWarning");
+
+        if (event && typeof event.getModifierState === "function" && event.getModifierState("CapsLock")) {
+            capsWarning.innerText = "Caps Lock is ON";
+        } else {
+            capsWarning.innerText = "";
+        }
+    }
+
+    function hideCapsLockWarning() {
+        document.getElementById("capsLockWarning").innerText = "";
+    }
+
+    function checkPasswordRules(event) {
+        checkCapsLock(event);
+
         const password = document.getElementById("password").value;
         const error = document.getElementById("passwordError");
 
@@ -98,10 +117,10 @@
         const numbers = (password.match(/[0-9]/g) || []).length;
         const symbols = (password.match(/[^A-Za-z0-9]/g) || []).length;
 
-        if (password.length < 5) {
-            error.innerText = "Password must be at least 5 characters.";
-        } else if (uppercase < 1) {
-            error.innerText = "Password must contain at least 1 uppercase letter.";
+        if (password.length < 8) {
+            error.innerText = "Password must be at least 8 characters.";
+        } else if (uppercase < 2) {
+            error.innerText = "Password must contain at least 2 uppercase letters.";
         } else if (numbers < 2) {
             error.innerText = "Password must contain at least 2 numbers.";
         } else if (symbols < 2) {
@@ -116,7 +135,7 @@
         const confirm = document.getElementById("password-confirm").value;
         const error = document.getElementById("confirmError");
 
-        if (password !== confirm) {
+        if (confirm !== "" && password !== confirm) {
             error.innerText = "Passwords do not match.";
         } else {
             error.innerText = "";

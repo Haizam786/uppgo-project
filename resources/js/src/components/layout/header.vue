@@ -7,9 +7,8 @@
                     <li class="nav-item theme-logo">
                         <router-link to="/dashboard">
                             <div class="d-flex">
-                                <div v-if="organisations[0].logo">
-                                    <img :src="'/storage/profile/' + organisations[0].logo" class="navbar-logo"
-                                        alt="logo" />
+                                <div v-if="myProfile.image_url">
+                                    <img :src="myProfile.image_url" class="navbar-logo" alt="logo" />
                                 </div>
 
                                 <div v-else>
@@ -20,7 +19,7 @@
                     </li>
                     <li class="nav-item theme-text">
                         <router-link to="/dashboard" class="nav-link">
-                            {{ organisations[0].name }}
+                            {{ myProfile.name }}
                         </router-link>
                     </li>
                 </ul>
@@ -124,23 +123,23 @@
                         </a>
                     </div>
 
-                    <b-dropdown toggle-tag="a" variant="icon-only" toggle-class="nav-link"
+                    <!-- <b-dropdown toggle-tag="a" variant="icon-only" toggle-class="nav-link"
                         class="nav-item language-dropdown">
                         <template #button-content>
                             <img v-if="selectedLang" :src="require(`@/assets/images/flags/${selectedLang.code}.png`)
                                 " class="flag-width" alt="flag" />
                         </template>
-                        <perfect-scrollbar>
-                            <b-dropdown-item v-for="item in countryList" :key="item.code"
-                                v-if="['en', 'bd'].includes(item.code)" link-class="d-flex align-items-center"
-                                :active="$i18n.locale === item.code" @click.prevent="changeLanguage(item)">
-                                <img :src="require(`@/assets/images/flags/${item.code}.png`)
+<perfect-scrollbar>
+    <b-dropdown-item v-for="item in countryList" :key="item.code" v-if="['en', 'bd'].includes(item.code)"
+        link-class="d-flex align-items-center" :active="$i18n.locale === item.code"
+        @click.prevent="changeLanguage(item)">
+        <img :src="require(`@/assets/images/flags/${item.code}.png`)
                                     " class="flag-width" alt="" />
-                                <span>{{ item.name }}</span>
-                            </b-dropdown-item>
-                        </perfect-scrollbar>
-                    </b-dropdown>
-
+        <span>{{ item.name }}</span>
+    </b-dropdown-item>
+</perfect-scrollbar>
+</b-dropdown> -->
+                    <!-- 
                     <b-dropdown toggle-tag="a" variant="icon-only" toggle-class="nav-link"
                         class="nav-item message-dropdown" :right="true">
                         <template #button-content>
@@ -166,7 +165,7 @@
                             </b-media>
                         </b-dropdown-item>
 
-                    </b-dropdown>
+                    </b-dropdown> -->
 
                     <!-- Notification activity dropdown -->
                     <b-dropdown toggle-tag="a" variant="icon-only" toggle-class="nav-link"
@@ -207,7 +206,7 @@
                     </b-dropdown>
 
                     <!-- QR scanner -->
-                    <div class="d-flex align-items-center justify-content-center ml-3">
+                    <!-- <div class="d-flex align-items-center justify-content-center ml-3">
                         <router-link to="/scan-qr">
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -218,14 +217,14 @@
                             </svg>
 
                         </router-link>
-                    </div>
+                    </div> -->
 
                     <!-- Profle Dropdown -->
                     <b-dropdown toggle-tag="a" variant="icon-only" toggle-class="user nav-link"
                         class="nav-item user-profile-dropdown" :right="true">
                         <template #button-content>
-                            <div v-if="logged_user.image_path">
-                                <img :src="'/storage/admins/' + logged_user.image_path" alt="avatar" />
+                            <div v-if="myProfile.image_url">
+                                <img :src="myProfile.image_url" alt="avatar" />
                             </div>
 
                             <div v-else>
@@ -711,6 +710,13 @@ export default {
             logged_user: [],
             mail_logs: [],
 
+            myProfile: {
+                id: null,
+                name: '',
+                email: '',
+                image_url: null,
+            },
+
             selectedLang: null,
             countryList: this.$store.state.countryList,
             organisations: [{}],
@@ -719,7 +725,8 @@ export default {
     },
     mounted() {
         this.fetchUser();
-        this.fetchOrganisations();
+        this.fetchMyProfile();
+        // this.fetchOrganisations();
         this.fetchActivites();
         this.fetchMailLogs();
         this.selectedLang = this.$appSetting.toggleLanguage();
@@ -750,17 +757,17 @@ export default {
         },
 
         //Fetch all organisation details from db
-        fetchOrganisations() {
-            axios
-                .get("/admin/fetch/organisations")
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.organisations = res.data;
-                    }
-                }).catch((err) => {
-                    console.log("error:" + err);
-                });
-        },
+        // fetchOrganisations() {
+        //     axios
+        //         .get("/admin/fetch/organisations")
+        //         .then((res) => {
+        //             if (res.status == 200) {
+        //                 this.organisations = res.data;
+        //             }
+        //         }).catch((err) => {
+        //             console.log("error:" + err);
+        //         });
+        // },
 
         //Fetch all activities details from db
         fetchActivites() {
@@ -811,6 +818,24 @@ export default {
                 .then((res) => {
                     if (res.status == 200) {
                         this.mail_logs = res.data;
+                    }
+                })
+                .catch((err) => {
+                    console.log("error:" + err);
+                });
+        },
+
+        fetchMyProfile() {
+            axios
+                .get("/admin/fetch/user?me=1")
+                .then((res) => {
+                    if (res.status == 200) {
+                        this.myProfile = {
+                            id: res.data.id,
+                            name: res.data.name,
+                            email: res.data.email,
+                            image_url: res.data.image_url,
+                        };
                     }
                 })
                 .catch((err) => {
