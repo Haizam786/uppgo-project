@@ -24,8 +24,7 @@
                         <div class="panel-body" v-for="org in organisation">
                             <div class="d-flex justify-content-between">
                                 <h3 class="">{{ $t('profile') }}</h3>
-                                <a @click="$bvModal.show('editProfileModal');"
-                                    class="mt-2 edit-profile">
+                                <a @click="$bvModal.show('editProfileModal');" class="mt-2 edit-profile">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-edit-3">
@@ -108,109 +107,71 @@
                 </div>
 
                 <!-- Modal -->
-<b-modal
-    id="editProfileModal"
-    hide-footer
-    cancel-only
-    :title="$t('Edit_Profile')"
-    @show="onEditModalShow"
->
-    <form class="mt-0" enctype="multipart/form-data" autocomplete="off">
-        <div>
+                <b-modal id="editProfileModal" hide-footer cancel-only :title="$t('Edit_Profile')"
+                    @show="onEditModalShow">
+                    <form class="mt-0" enctype="multipart/form-data" autocomplete="off">
+                        <div>
 
-            <div class="row m-2">
-                <label for="org_name">{{ $t('User Name') }}</label>
-                <input
-                    id="org_name"
-                    type="text"
-                    :class="errors.name ? 'form-control is-invalid' : 'form-control'"
-                    placeholder="First Name"
-                    v-model="edit_name"
-                />
-                <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
-            </div>
+                            <div class="row m-2">
+                                <label for="org_name">{{ $t('User Name') }}</label>
+                                <input id="org_name" type="text"
+                                    :class="errors.name ? 'form-control is-invalid' : 'form-control'"
+                                    placeholder="First Name" v-model="edit_name" />
+                                <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
+                            </div>
 
-            <div class="row m-2">
-                <label for="input_profile_email">{{ $t('email') }}</label>
-                <input
-                    id="input_profile_email"
-                    type="email"
-                    :class="errors.address ? 'form-control is-invalid' : 'form-control'"
-                    v-model="edit_email"
-                    autocomplete="off"
-                />
-                <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
-            </div>
+                            <div class="row m-2">
+                                <label for="input_profile_email">{{ $t('email') }}</label>
+                                <input id="input_profile_email" type="email"
+                                    :class="errors.address ? 'form-control is-invalid' : 'form-control'"
+                                    v-model="edit_email" autocomplete="off" />
+                                <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
+                            </div>
 
-            <div class="row m-2">
-                <label for="new_password">New Password</label>
-                <input
-                    id="new_password"
-                    type="password"
-                    class="form-control"
-                    v-model="edit_password"
-                    placeholder="Enter new password"
-                    autocomplete="new-password"
-                />
-                <small class="text-muted">
-                    Must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.
-                </small>
-                <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
-            </div>
+                            <div class="row m-2">
+                                <label for="new_password">New Password</label>
+                                <input id="new_password" type="password" class="form-control" v-model="edit_password"
+                                    placeholder="Enter new password" autocomplete="new-password" />
+                                <small class="text-muted">
+                                    Must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.
+                                </small>
+                                <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
+                            </div>
 
-            <div class="row m-2">
-                <label for="confirm_password">Confirm Password</label>
-                <input
-                    id="confirm_password"
-                    type="password"
-                    class="form-control"
-                    v-model="edit_password_confirmation"
-                    placeholder="Confirm new password"
-                    autocomplete="new-password"
-                />
-                <small v-if="confirmPasswordError" class="text-danger">
-                    {{ confirmPasswordError }}
-                </small>
-            </div>
+                            <div class="row m-2">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input id="confirm_password" type="password" class="form-control"
+                                    v-model="edit_password_confirmation" placeholder="Confirm new password"
+                                    autocomplete="new-password" />
+                                <small v-if="confirmPasswordError" class="text-danger">
+                                    {{ confirmPasswordError }}
+                                </small>
+                            </div>
 
-            <div class="row m-2">
-                <label for="input_file_image_customer">{{ $t('logo') }}</label>
-                <input
-                    id="input_file_image_customer"
-                    type="file"
-                    class="form-control"
-                    @change="onImageChange"
-                />
-            </div>
+                            <div class="row m-2">
+                                <label for="input_file_image_customer">{{ $t('logo') }}</label>
+                                <input id="input_file_image_customer" type="file" class="form-control"
+                                    @change="onImageChange" />
+                            </div>
 
-            <img
-                v-if="image_url"
-                class="mt-2 mb-4"
-                :src="image_url"
-                width="100%"
-                height="100%"
-            />
+                            <img v-if="image_url" class="mt-2 mb-4" :src="image_url" width="100%" height="100%" />
 
-        </div>
-    </form>
+                        </div>
+                    </form>
 
-    <div class="d-flex flex-row-reverse">
-        <b-button variant="success" class="m-3" @click="editProfile">
-            {{ $t('done') }}
-        </b-button>
+                    <div class="d-flex flex-row-reverse">
+                        <b-button variant="success" class="m-3" @click="editProfile">
+                            {{ $t('done') }}
+                        </b-button>
 
-        <b-button
-            id="edit_cancel"
-            variant="outline-danger"
-            class="m-3"
-            @click="$bvModal.hide('editProfileModal')"
-        >
-            <i class="flaticon-cancel-12"></i>
-            {{ $t('cancel') }}
-        </b-button>
-    </div>
+                        <b-button id="edit_cancel" variant="outline-danger" class="m-3"
+                            @click="$bvModal.hide('editProfileModal')">
+                            <i class="flaticon-cancel-12"></i>
+                            {{ $t('cancel') }}
+                        </b-button>
+                    </div>
 
-</b-modal>
+                </b-modal>
                 <!--  End Model -->
             </div>
 
@@ -293,7 +254,7 @@ export default {
 
     mounted() {
         this.fetchMyProfile();
-        this.fetchOrganisations();
+       
         this.fetchActivites();
     },
     methods: {
@@ -364,77 +325,145 @@ export default {
         },
 
         //Edit a user
-        editProfile() {
-            this.passwordError = "";
-            this.confirmPasswordError = "";
+        // editProfile() {
+        //     this.passwordError = "";
+        //     this.confirmPasswordError = "";
 
-            const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
+        //     const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
 
-            if (wantsPasswordChange) {
-                this.passwordError = this.validatePasswordRules(this.edit_password);
-                if (this.passwordError) return;
+        //     if (wantsPasswordChange) {
+        //         this.passwordError = this.validatePasswordRules(this.edit_password);
+        //         if (this.passwordError) return;
 
-                if (this.edit_password !== this.edit_password_confirmation) {
-                    this.confirmPasswordError = "Passwords do not match.";
-                    return;
+        //         if (this.edit_password !== this.edit_password_confirmation) {
+        //             this.confirmPasswordError = "Passwords do not match.";
+        //             return;
+        //         }
+        //     }
+
+
+        //     const payload = {
+        //         id: this.user_id,
+        //         logo: this.logo,
+        //     };
+
+        //     if (wantsPasswordChange) {
+        //         payload.password = this.edit_password;
+        //         payload.password_confirmation = this.edit_password_confirmation;
+        //     }
+
+        //     axios.put("/admin/update/user", payload)
+        //         .then((res) => {
+        //             console.log("UPDATE RESPONSE:", res.status, res.data);
+
+        //             const ok = res.status === 200 && res.data && res.data.success === true;
+
+        //             if (ok) {
+        //                 if (res.data.image_url) {
+        //                     this.myProfile.image_url = res.data.image_url;
+        //                     this.image_url = res.data.image_url;
+        //                 }
+
+        //                 $("#edit_cancel").click();
+
+
+        //                 this.edit_password = "";
+        //                 this.edit_password_confirmation = "";
+
+        //                 this.reset();
+        //                 this.fetchMyProfile();
+        //                 this.fetchOrganisations();
+
+        //                 Swal.fire({
+        //                     icon: "success",
+        //                     title: this.$t("Successfully_Updated"),
+        //                     showConfirmButton: false,
+        //                     timer: 1500,
+        //                 });
+        //             } else {
+        //                 Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        //             }
+        //         })
+        //         .catch((err) => {
+        //             if (err.response && err.response.status === 422) {
+        //                 const ve = err.response.data.errors || {};
+        //                 if (ve.password) this.passwordError = ve.password[0];
+        //                 if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
+        //             }
+
+        //             Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        //         });
+
+        // },
+editProfile() {
+    this.passwordError = "";
+    this.confirmPasswordError = "";
+
+    const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
+
+    if (wantsPasswordChange) {
+        this.passwordError = this.validatePasswordRules(this.edit_password);
+        if (this.passwordError) return;
+
+        if (this.edit_password !== this.edit_password_confirmation) {
+            this.confirmPasswordError = "Passwords do not match.";
+            return;
+        }
+    }
+
+    const payload = {
+        id: this.user_id,
+        logo: this.logo,
+    };
+
+    if (wantsPasswordChange) {
+        payload.password = this.edit_password;
+        payload.password_confirmation = this.edit_password_confirmation;
+    }
+
+    axios.put("/admin/update/user", payload)
+        .then((res) => {
+            console.log("UPDATE RESPONSE:", res.status, res.data);
+
+            const ok = res.status === 200 && res.data && res.data.success === true;
+            console.log("OK VALUE:", ok);
+
+            if (ok) {
+                if (res.data.image_url) {
+                    this.myProfile.image_url = res.data.image_url;
+                    this.image_url = res.data.image_url;
                 }
-            }
 
-            
-            const payload = {
-                id: this.user_id,
-                logo: this.logo,
-            };
+                $("#edit_cancel").click();
 
-            if (wantsPasswordChange) {
-                payload.password = this.edit_password;
-                payload.password_confirmation = this.edit_password_confirmation;
-            }
+                this.reset();
+                this.fetchMyProfile();
+              
 
-            axios.put("/admin/update/user", payload)
-                .then((res) => {
-                    console.log("UPDATE RESPONSE:", res.status, res.data);
-
-                   const ok = res.status === 200 && res.data && res.data.success === true;
-
-                    if (ok) {
-                        if (res.data.image_url) {
-                            this.myProfile.image_url = res.data.image_url;
-                            this.image_url = res.data.image_url; 
-                        }
-
-                        $("#edit_cancel").click();
-
-
-                        this.edit_password = "";
-                        this.edit_password_confirmation = "";
-
-                        this.reset();
-                        this.fetchMyProfile();
-                        this.fetchOrganisations();
-
-                        Swal.fire({
-                            icon: "success",
-                            title: this.$t("Successfully_Updated"),
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                    } else {
-                        Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
-                    }
-                })
-                .catch((err) => {
-                    if (err.response && err.response.status === 422) {
-                        const ve = err.response.data.errors || {};
-                        if (ve.password) this.passwordError = ve.password[0];
-                        if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
-                    }
-
-                    Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+                Swal.fire({
+                    icon: "success",
+                    title: this.$t("Successfully_Updated"),
+                    showConfirmButton: false,
+                    timer: 1500,
                 });
 
-        },
+                return;
+            }
 
+            Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        })
+        .catch((err) => {
+            console.log("CATCH BLOCK RUNNING", err);
+
+            if (err.response && err.response.status === 422) {
+                const ve = err.response.data.errors || {};
+                if (ve.password) this.passwordError = ve.password[0];
+                if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
+            }
+
+            Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        });
+},
         validatePasswordRules(password) {
 
             const uppercaseCount = (password.match(/[A-Z]/g) || []).length;
@@ -450,45 +479,45 @@ export default {
         },
 
         onEditModalShow() {
-    // clear passwords before modal renders
-    this.edit_password = "";
-    this.edit_password_confirmation = "";
-    this.passwordError = "";
-    this.confirmPasswordError = "";
+            // clear passwords before modal renders
+            this.edit_password = "";
+            this.edit_password_confirmation = "";
+            this.passwordError = "";
+            this.confirmPasswordError = "";
 
-    // clear upload preview
-    this.logo = null;
+            // clear upload preview
+            this.logo = null;
 
-    // load profile data
-    this.fetchMyProfile();
-},
-fetchMyProfile() {
-  axios.get("/admin/fetch/user?me=1")
-    .then((res) => {
-      const u = res.data;
+            // load profile data
+            this.fetchMyProfile();
+        },
+        fetchMyProfile() {
+            axios.get("/admin/fetch/user?me=1")
+                .then((res) => {
+                    const u = res.data;
 
-      this.myProfile = {
-        id: u.id,
-        name: u.name,
-        email: u.email,
-        image_url: u.image_url,
-      };
+                    this.myProfile = {
+                        id: u.id,
+                        name: u.name,
+                        email: u.email,
+                        image_url: u.image_url,
+                    };
 
-      this.edit_id = u.id;
-      this.edit_name = u.name;
-      this.edit_email = u.email;
+                    this.edit_id = u.id;
+                    this.edit_name = u.name;
+                    this.edit_email = u.email;
 
-      this.image_url = u.image_url;
-      this.logo = null;
+                    this.image_url = u.image_url;
+                    this.logo = null;
 
-      
-      this.edit_password = "";
-      this.edit_password_confirmation = "";
-      this.passwordError = "";
-      this.confirmPasswordError = "";
-    })
-    .catch((err) => console.log(err));
-},
+
+                    this.edit_password = "";
+                    this.edit_password_confirmation = "";
+                    this.passwordError = "";
+                    this.confirmPasswordError = "";
+                })
+                .catch((err) => console.log(err));
+        },
     }
 
 };
