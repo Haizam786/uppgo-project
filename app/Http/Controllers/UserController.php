@@ -16,16 +16,53 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    // public function index()
+    // {
+    //     $users = User::where('active', 1)
+    //         ->where('deleted', 0)
+    //         ->get();
+
+    //     foreach ($users as $key => $user) {
+
+
+    //         $users[$key]['created_date'] = $user->created_at->format('Y-m-d');
+    //     }
+
+    //     return response()->json($users);
+    // }
+
+    public function index(Request $request)
     {
+       
+        if ($request->boolean('me')) {
+
+            if (!auth()->check()) {
+                return response()->json(['message' => 'Unauthenticated.'], 401);
+            }
+
+            $user = User::where('deleted', 0)
+                ->where('active', 1)
+                ->findOrFail(auth()->id());
+
+            return response()->json([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'image_path' => $user->image_path,
+                'image_url' => $user->image_path
+                    ? asset('storage/users/' . $user->image_path) . '?t=' . $user->updated_at->timestamp
+                    : null,
+            ]);
+        }
+
+       
         $users = User::where('active', 1)
             ->where('deleted', 0)
             ->get();
 
         foreach ($users as $key => $user) {
-
-
             $users[$key]['created_date'] = $user->created_at->format('Y-m-d');
+            $users[$key]['image_url'] = $user->image_path ? asset('storage/users/' . $user->image_path) : null;
         }
 
         return response()->json($users);
@@ -81,17 +118,20 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-public function update(Request $request)
+    public function update(Request $request)
     {
-        
-    // console.log("sending id:", this.edit_id, this.user_id);
-       $request->validate([
-    'password' => [
-        'nullable','string','min:8','confirmed',
-        'regex:/^(?=(?:.*[A-Z]){1,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).*$/',
-    ],
 
-            
+        // console.log("sending id:", this.edit_id, this.user_id);
+        $request->validate([
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=(?:.*[A-Z]){1,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).*$/',
+            ],
+
+
             'logo' => ['nullable', 'string'],
         ], [
             'password.regex' => 'Password must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.',
@@ -103,22 +143,22 @@ public function update(Request $request)
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
-       
+
         if ((int) auth()->id() !== $id) {
             return response()->json(['message' => 'Forbidden.'], 403);
         }
 
-      
+
         $user = User::where('deleted', 0)
             ->where('active', 1)
             ->findOrFail($id);
 
-       
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
-       
+
         $image = $request->input('logo');
         if (!empty($image)) {
             $data = substr($image, strpos($image, ',') + 1);
@@ -137,12 +177,12 @@ public function update(Request $request)
 
             $folder = 'users';
 
-           
+
             if (!Storage::disk('public')->exists($folder)) {
                 Storage::disk('public')->makeDirectory($folder);
             }
 
-           
+
             if (!empty($user->image_path)) {
                 Storage::disk('public')->delete($folder . '/' . $user->image_path);
             }
@@ -156,8 +196,13 @@ public function update(Request $request)
 
         $user->save();
 
-      
-        return response()->json(1);
+
+       return response()->json([
+    'success' => true,
+    'image_url' => $user->image_path
+        ? asset('storage/users/' . $user->image_path) . '?t=' . $user->updated_at->timestamp
+        : null,
+]);
     }
 
     /**

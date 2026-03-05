@@ -24,7 +24,7 @@
                         <div class="panel-body" v-for="org in organisation">
                             <div class="d-flex justify-content-between">
                                 <h3 class="">{{ $t('profile') }}</h3>
-                                <a @click="setToUpdate(org.id, org.name, org.bank_name, org.account_no, org.swift_code, org.country, org.email, org.address, org.telephone); $bvModal.show('editProfileModal');"
+                                <a @click="$bvModal.show('editProfileModal');"
                                     class="mt-2 edit-profile">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -35,15 +35,17 @@
                                 </a>
                             </div>
                             <div class="text-center user-info">
-                                <div v-if="org.logo">
-                                    <img :src="'/storage/profile/' + org.logo" alt="..." height="160px" width="180px" />
+                                <div v-if="myProfile.image_url">
+                                    <img :src="myProfile.image_url" alt="..." height="160px" width="180px" />
                                 </div>
 
                                 <div v-else>
                                     <img src="@/assets/images/dummy_profile.png" alt="..." height="160px"
                                         width="180px" />
                                 </div>
-                                <p class="">{{ org.name }}</p>
+
+                                <p class="mb-0">{{ myProfile.name }}</p>
+                                <small class="text-muted">{{ myProfile.email }}</small>
                             </div>
                             <div class="user-info-list">
                                 <div class="">
@@ -106,69 +108,109 @@
                 </div>
 
                 <!-- Modal -->
-                <b-modal id="editProfileModal" hide-footer cancel-only :title="$t('Edit_Profile')">
-                    <form class="mt-0" enctype="multipart/form-data">
-                        <div>
+<b-modal
+    id="editProfileModal"
+    hide-footer
+    cancel-only
+    :title="$t('Edit_Profile')"
+    @show="onEditModalShow"
+>
+    <form class="mt-0" enctype="multipart/form-data" autocomplete="off">
+        <div>
 
-                            <div class="row m-2">
-                                <label for="org_name">{{ $t('User Name') }}</label>
-                                <input id="org_name" type="text" :class="errors.name
-                                    ? 'form-control is-invalid'
-                                    : 'form-control'
-                                    " placeholder="First Name" v-model="edit_name
-                                        " />
-                                <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
-                            </div>
+            <div class="row m-2">
+                <label for="org_name">{{ $t('User Name') }}</label>
+                <input
+                    id="org_name"
+                    type="text"
+                    :class="errors.name ? 'form-control is-invalid' : 'form-control'"
+                    placeholder="First Name"
+                    v-model="edit_name"
+                />
+                <small v-if="errors.name" class="text-danger">{{ errors.name[0] }}</small>
+            </div>
 
-                            <div class="row m-2">
-                                <label for="input_profile_email">{{ $t('email') }}</label>
-                                <input id="input_profile_email" type="email" :class="errors.address
-                                    ? 'form-control is-invalid'
-                                    : 'form-control'
-                                    " v-model="edit_email
-                                        " />
-                                <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
-                            </div>
+            <div class="row m-2">
+                <label for="input_profile_email">{{ $t('email') }}</label>
+                <input
+                    id="input_profile_email"
+                    type="email"
+                    :class="errors.address ? 'form-control is-invalid' : 'form-control'"
+                    v-model="edit_email"
+                    autocomplete="off"
+                />
+                <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
+            </div>
 
-                            <div class="row m-2">
-                                <label for="new_password">New Password</label>
-                                <input id="new_password" type="password" class="form-control" v-model="edit_password"
-                                    placeholder="Enter new password" />
-                                <small class="text-muted">
-                                    Must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.
-                                </small>
-                                <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
-                            </div>
+            <div class="row m-2">
+                <label for="new_password">New Password</label>
+                <input
+                    id="new_password"
+                    type="password"
+                    class="form-control"
+                    v-model="edit_password"
+                    placeholder="Enter new password"
+                    autocomplete="new-password"
+                />
+                <small class="text-muted">
+                    Must contain at least 1 uppercase letter, 2 numbers, and 2 symbols.
+                </small>
+                <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
+            </div>
 
-                            <div class="row m-2">
-                                <label for="confirm_password">Confirm Password</label>
-                                <input id="confirm_password" type="password" class="form-control"
-                                    v-model="edit_password_confirmation" placeholder="Confirm new password" />
-                                <small v-if="confirmPasswordError" class="text-danger">{{ confirmPasswordError
-                                    }}</small>
-                            </div>
+            <div class="row m-2">
+                <label for="confirm_password">Confirm Password</label>
+                <input
+                    id="confirm_password"
+                    type="password"
+                    class="form-control"
+                    v-model="edit_password_confirmation"
+                    placeholder="Confirm new password"
+                    autocomplete="new-password"
+                />
+                <small v-if="confirmPasswordError" class="text-danger">
+                    {{ confirmPasswordError }}
+                </small>
+            </div>
 
+            <div class="row m-2">
+                <label for="input_file_image_customer">{{ $t('logo') }}</label>
+                <input
+                    id="input_file_image_customer"
+                    type="file"
+                    class="form-control"
+                    @change="onImageChange"
+                />
+            </div>
 
-                            <div class="row m-2">
-                                <label for="input_file_image_customer">{{ $t('logo') }}</label>
-                                <input id="input_file_image_customer" type="file" class="form-control" @change="
-                                    onImageChange
-                                " />
-                            </div>
+            <img
+                v-if="image_url"
+                class="mt-2 mb-4"
+                :src="image_url"
+                width="100%"
+                height="100%"
+            />
 
-                            <img v-if="image_url" class="mt-2 mb-4" :src="image_url" width="100%" height="100%" />
+        </div>
+    </form>
 
-                        </div>
-                    </form>
+    <div class="d-flex flex-row-reverse">
+        <b-button variant="success" class="m-3" @click="editProfile">
+            {{ $t('done') }}
+        </b-button>
 
-                    <div class="d-flex flex-row-reverse ">
-                        <b-button variant="success" class="m-3" @click="editProfile">{{ $t('done') }}</b-button>
-                        <b-button id="edit_cancel" variant="outline-danger" class="m-3" data-dismiss="modal"
-                            @click="$bvModal.hide('editProfileModal')"><i class="flaticon-cancel-12"></i>{{ $t('cancel')
-                            }}</b-button>
-                    </div>
+        <b-button
+            id="edit_cancel"
+            variant="outline-danger"
+            class="m-3"
+            @click="$bvModal.hide('editProfileModal')"
+        >
+            <i class="flaticon-cancel-12"></i>
+            {{ $t('cancel') }}
+        </b-button>
+    </div>
 
-                </b-modal>
+</b-modal>
                 <!--  End Model -->
             </div>
 
@@ -222,6 +264,13 @@ export default {
             logo: null,
             image_url: null,
 
+            myProfile: {
+                id: null,
+                name: '',
+                email: '',
+                image_url: null,
+            },
+
             edit_id: null,
             edit_name: null,
             // edit_bank_name: null,
@@ -243,22 +292,12 @@ export default {
     },
 
     mounted() {
-        this.fetchOrganisations()
-        this.fetchActivites()
+        this.fetchMyProfile();
+        this.fetchOrganisations();
+        this.fetchActivites();
     },
     methods: {
-        //Fetch all organisation details from db
-        fetchOrganisations() {
-            axios
-                .get("/admin/fetch/organisations")
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.organisation = res.data;
-                    }
-                }).catch((err) => {
-                    console.log("error:" + err);
-                });
-        },
+
 
         //Fetch all activities details from db
         fetchActivites() {
@@ -275,13 +314,18 @@ export default {
         },
 
         reset() {
-            this.organisation = [];
-            this.activities = [];
-
+            this.logo = null;
             this.image_url = null;
+
+            this.edit_password = "";
+            this.edit_password_confirmation = "";
+            this.passwordError = "";
+            this.confirmPasswordError = "";
+
+
         },
 
-        
+
         setToUpdate(id, name, email, address, telephone) {
             this.edit_id = id;
             this.edit_name = name;
@@ -292,7 +336,7 @@ export default {
             this.image_url = null;
         },
 
-        
+
         onImageChange(e) {
             this.logo = e.target.files[0];
             this.image_url = URL.createObjectURL(this.logo);
@@ -321,16 +365,13 @@ export default {
 
         //Edit a user
         editProfile() {
-
             this.passwordError = "";
             this.confirmPasswordError = "";
-
 
             const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
 
             if (wantsPasswordChange) {
                 this.passwordError = this.validatePasswordRules(this.edit_password);
-
                 if (this.passwordError) return;
 
                 if (this.edit_password !== this.edit_password_confirmation) {
@@ -339,15 +380,28 @@ export default {
                 }
             }
 
-            axios
-                .put("/admin/update/user", {
-                    id: this.user_id,
-                    password: this.edit_password,
-                    password_confirmation: this.edit_password_confirmation,
-                    logo: this.logo
-                })
+            
+            const payload = {
+                id: this.user_id,
+                logo: this.logo,
+            };
+
+            if (wantsPasswordChange) {
+                payload.password = this.edit_password;
+                payload.password_confirmation = this.edit_password_confirmation;
+            }
+
+            axios.put("/admin/update/user", payload)
                 .then((res) => {
-                    if (res.status == 200 && res.data == 1) {
+                    console.log("UPDATE RESPONSE:", res.status, res.data);
+
+                   const ok = res.status === 200 && res.data && res.data.success === true;
+
+                    if (ok) {
+                        if (res.data.image_url) {
+                            this.myProfile.image_url = res.data.image_url;
+                            this.image_url = res.data.image_url; 
+                        }
 
                         $("#edit_cancel").click();
 
@@ -356,25 +410,21 @@ export default {
                         this.edit_password_confirmation = "";
 
                         this.reset();
+                        this.fetchMyProfile();
                         this.fetchOrganisations();
 
                         Swal.fire({
                             icon: "success",
-                            title: this.$t('Successfully_Updated'),
+                            title: this.$t("Successfully_Updated"),
                             showConfirmButton: false,
                             timer: 1500,
                         });
                     } else {
-                        Swal.fire(
-                            this.$t('error'),
-                            this.$t('profile_update_unsuccessfull'),
-                            this.$t('error')
-                        );
+                        Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
                     }
                 })
                 .catch((err) => {
-                    if (err.response && err.response.status == 422) {
-                        
+                    if (err.response && err.response.status === 422) {
                         const ve = err.response.data.errors || {};
                         if (ve.password) this.passwordError = ve.password[0];
                         if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
@@ -382,6 +432,7 @@ export default {
 
                     Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
                 });
+
         },
 
         validatePasswordRules(password) {
@@ -397,6 +448,47 @@ export default {
             if (symbolCount < 2) return "Password must contain at least 2 symbols.";
             return "";
         },
+
+        onEditModalShow() {
+    // clear passwords before modal renders
+    this.edit_password = "";
+    this.edit_password_confirmation = "";
+    this.passwordError = "";
+    this.confirmPasswordError = "";
+
+    // clear upload preview
+    this.logo = null;
+
+    // load profile data
+    this.fetchMyProfile();
+},
+fetchMyProfile() {
+  axios.get("/admin/fetch/user?me=1")
+    .then((res) => {
+      const u = res.data;
+
+      this.myProfile = {
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        image_url: u.image_url,
+      };
+
+      this.edit_id = u.id;
+      this.edit_name = u.name;
+      this.edit_email = u.email;
+
+      this.image_url = u.image_url;
+      this.logo = null;
+
+      
+      this.edit_password = "";
+      this.edit_password_confirmation = "";
+      this.passwordError = "";
+      this.confirmPasswordError = "";
+    })
+    .catch((err) => console.log(err));
+},
     }
 
 };
