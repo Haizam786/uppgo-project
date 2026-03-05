@@ -27,21 +27,15 @@ const routes = [
 
 
 
-    //Organisation Profile
+    //user Profile
     {
         path: '/profile',
-        name: 'organisation-profile',
+        name: 'user-profile',
         component: () =>
-            import ('../views/organisation-profile/OrganisationProfile.vue')
+            import ('../views/user-profile/UserProfile.vue')
     },
 
-    //scan-qr
-    {
-        path: '/scan-qr',
-        name: 'scan-qr-cod',
-        component: () =>
-            import ('../views/qr/QRScanner.vue')
-    },
+
 
 ];
 
