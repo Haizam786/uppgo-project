@@ -13,36 +13,26 @@ class RegisterController extends Controller
 {
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
-        return Validator::make(
+        $validator = Validator::make(
             $data,
             [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'user_category' => ['required', 'in:nation,non_nation'],
+                'interest_1' => ['required', 'string'],
+                'interest_2' => ['nullable', 'string'],
+                'interest_3' => ['nullable', 'string'],
+                'interest_4' => ['nullable', 'string'],
+                'interest_5' => ['nullable', 'string'],
                 'password' => [
                     'required',
                     'string',
@@ -55,22 +45,41 @@ class RegisterController extends Controller
                 'password.regex' => 'Password must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.',
             ]
         );
+
+        $validator->after(function ($validator) use ($data) {
+            $interests = array_filter([
+                $data['interest_1'] ?? null,
+                $data['interest_2'] ?? null,
+                $data['interest_3'] ?? null,
+                $data['interest_4'] ?? null,
+                $data['interest_5'] ?? null,
+            ]);
+
+            if (count($interests) !== count(array_unique($interests))) {
+                $validator->errors()->add('event_interests', 'Please do not select the same interest more than once.');
+            }
+        });
+
+        return $validator;
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
     protected function create(array $data)
     {
+        $interests = array_values(array_filter([
+            $data['interest_1'] ?? null,
+            $data['interest_2'] ?? null,
+            $data['interest_3'] ?? null,
+            $data['interest_4'] ?? null,
+            $data['interest_5'] ?? null,
+        ]));
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 'user',
-            'user_category' => 'non_nation',
+            'user_category' => $data['user_category'],
+            'event_interests' => $interests,
             'active' => 1,
             'deleted' => 0,
         ]);

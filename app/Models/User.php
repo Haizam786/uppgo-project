@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'user_category',
         'image_path',
+        'event_interests',
         'active',
         'deleted',
     ];
@@ -48,6 +49,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'active' => 'boolean',
         'deleted' => 'boolean',
+        'event_interests' => 'array',
     ];
 
 
