@@ -33,7 +33,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-       
+
         if ($request->boolean('me')) {
 
             if (!auth()->check()) {
@@ -48,6 +48,8 @@ class UserController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'user_category' => $user->user_category,
+                'event_interests' => $user->event_interests ?? [],
                 'image_path' => $user->image_path,
                 'image_url' => $user->image_path
                     ? asset('storage/users/' . $user->image_path) . '?t=' . $user->updated_at->timestamp
@@ -55,7 +57,7 @@ class UserController extends Controller
             ]);
         }
 
-       
+
         $users = User::where('active', 1)
             ->where('deleted', 0)
             ->get();
@@ -128,11 +130,11 @@ class UserController extends Controller
                 'string',
                 'min:8',
                 'confirmed',
-               'regex:/^(?=(?:.*[A-Z]){2,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).{8,}$/',
+                'regex:/^(?=(?:.*[A-Z]){2,})(?=(?:.*\d){2,})(?=(?:.*[^A-Za-z0-9]){2,}).{8,}$/',
             ],
-
-
             'logo' => ['nullable', 'string'],
+            // 'user_category' => ['required', 'in:nation,non_nation'],
+            'event_interests' => ['required', 'array', 'min:1'],
         ], [
             'password.regex' => 'Password must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.',
         ]);
@@ -152,6 +154,9 @@ class UserController extends Controller
         $user = User::where('deleted', 0)
             ->where('active', 1)
             ->findOrFail($id);
+
+        $user->user_category = $request->user_category;
+        $user->event_interests = $request->event_interests;
 
 
         if ($request->filled('password')) {
@@ -197,12 +202,12 @@ class UserController extends Controller
         $user->save();
 
 
-       return response()->json([
-    'success' => true,
-    'image_url' => $user->image_path
-        ? asset('storage/users/' . $user->image_path) . '?t=' . $user->updated_at->timestamp
-        : null,
-]);
+        return response()->json([
+            'success' => true,
+            'image_url' => $user->image_path
+                ? asset('storage/users/' . $user->image_path) . '?t=' . $user->updated_at->timestamp
+                : null,
+        ]);
     }
 
     /**

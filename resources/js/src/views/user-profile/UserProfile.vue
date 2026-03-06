@@ -43,63 +43,92 @@
                                         width="180px" />
                                 </div>
 
-                                <p class="mb-0">{{ myProfile.name }}</p>
-                                <small class="text-muted">{{ myProfile.email }}</small>
+                                <div class="user-main-info mt-3 text-center">
+
+    <h4 class="fw-bold mb-1" style="letter-spacing:0.3px;">
+        {{ myProfile.name }}
+    </h4>
+
+    <div class="d-inline-flex align-items-center justify-content-center px-3 py-1 rounded-pill"
+         style="background:#f1f3f5; font-size:13px;">
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="16" height="16"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             stroke-linecap="round"
+             stroke-linejoin="round"
+             class="me-2">
+
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12
+                     c0 1.1-.9 2-2 2H4
+                     c-1.1 0-2-.9-2-2V6
+                     c0-1.1.9-2 2-2z"></path>
+
+            <polyline points="22,6 12,13 2,6"></polyline>
+
+        </svg>
+
+        <span class="text-muted">
+            {{ myProfile.email }}
+        </span>
+
+    </div>
+
+</div>
                             </div>
-                            <div class="user-info-list">
-                                <div class="">
-                                    <ul class="contacts-block list-unstyled">
+                            <div class="user-info-list mt-4">
+                                <div class="mb-3">
+                                    <h6 class="mb-2">User Category</h6>
+                                    <div class="d-inline-flex align-items-center px-3 py-2 rounded"
+                                        style="background: #f1f2f3;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="8.5" cy="7" r="4"></circle>
+                                            <path d="M20 8v6"></path>
+                                            <path d="M23 11h-6"></path>
+                                        </svg>
 
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-map-pin">
-                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                                <circle cx="12" cy="10" r="3"></circle>
-                                            </svg>{{ org.address }}
-                                        </li>
+                                        <span class="fw-bold">
+                                            {{ myProfile.user_category === 'nation' ? 'Nation' : 'Non Nation' }}
+                                        </span>
+                                    </div>
+                                </div>
 
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-coffee">
-                                                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                                                <line x1="6" y1="1" x2="6" y2="4"></line>
-                                                <line x1="10" y1="1" x2="10" y2="4"></line>
-                                                <line x1="14" y1="1" x2="14" y2="4"></line>
-                                            </svg>
-                                            {{ org.country }}
-                                        </li>
+                                <div>
+                                    <h6 class="mb-3">Event Interests</h6>
 
-                                        <li class="contacts-block__item">
-                                            <a :href="'mailto:' + org.email">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-mail">
-                                                    <path
-                                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                                    </path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>
-                                                {{ org.email }}
-                                            </a>
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-phone">
-                                                <path
-                                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                                                </path>
-                                            </svg>
-                                            {{ org.telephone }}
-                                        </li>
-                                    </ul>
+                                    <div v-if="myProfile.event_interests && myProfile.event_interests.length">
+                                        <div v-for="(interest, index) in myProfile.event_interests" :key="index"
+                                            class="d-flex align-items-center justify-content-between px-3 py-3 mb-2 rounded"
+                                            style="background: #f8f9fa; border: 1px solid #e9ecef;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-3 d-flex align-items-center justify-content-center rounded-circle"
+                                                    style="width: 42px; height: 42px; background: #e9f5ff;">
+                                                    <span v-html="getInterestIcon(interest)"></span>
+                                                </div>
+
+                                                <div>
+                                                    <div class="fw-bold">{{ interest }}</div>
+                                                    <small class="text-muted">
+                                                        {{ getInterestRank(index) }}
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <span class="badge bg-light text-dark px-3 py-2">
+                                                #{{ index + 1 }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div v-else class="text-muted">
+                                        No event interests selected yet.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +154,88 @@
                                     autocomplete="off" readonly
                                     style="background-color: #f1f2f3; cursor: not-allowed;" />
                                 <small v-if="errors.email" class="text-danger">{{ errors.email[0] }}</small>
+                            </div>
+
+                            <!-- <div class="row m-2">
+                                <label for="user_category">User Category</label>
+                                <select id="user_category" class="form-control" v-model="edit_user_category">
+                                    <option value="">Select category</option>
+                                    <option value="nation">Nation</option>
+                                    <option value="non_nation">Non Nation</option>
+                                </select>
+                                <small v-if="categoryError" class="text-danger">{{ categoryError }}</small>
+                            </div> -->
+
+                            <div class="row m-2">
+                                <label for="user_category">User Category</label>
+
+                                <select id="user_category" class="form-control" v-model="edit_user_category" disabled
+                                    style="background-color:#f1f2f3; cursor:not-allowed;">
+
+                                    <option value="nation">Nation</option>
+                                    <option value="non_nation">Non Nation</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="row m-2">
+                                <label>Event Interests</label>
+                                <small class="text-muted d-block mb-2">
+                                    Select at least 1 interest, from highest interest to lowest.
+                                </small>
+
+                                <select class="form-control mb-2" v-model="edit_interest_1">
+                                    <option value="">1st Priority (Highest)</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Networking">Networking</option>
+                                </select>
+
+                                <select class="form-control mb-2" v-model="edit_interest_2">
+                                    <option value="">2nd Priority</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Networking">Networking</option>
+                                </select>
+
+                                <select class="form-control mb-2" v-model="edit_interest_3">
+                                    <option value="">3rd Priority</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Networking">Networking</option>
+                                </select>
+
+                                <select class="form-control mb-2" v-model="edit_interest_4">
+                                    <option value="">4th Priority</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Networking">Networking</option>
+                                </select>
+
+                                <select class="form-control mb-2" v-model="edit_interest_5">
+                                    <option value="">5th Priority (Lowest)</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Sports">Sports</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Networking">Networking</option>
+                                </select>
+
+                                <small v-if="interestError" class="text-danger">{{ interestError }}</small>
                             </div>
 
                             <div class="row m-2">
@@ -253,6 +364,15 @@ export default {
             user_id: this.$userId,
             capsLockOn: false,
 
+            edit_user_category: "",
+            edit_interest_1: "",
+            edit_interest_2: "",
+            edit_interest_3: "",
+            edit_interest_4: "",
+            edit_interest_5: "",
+            categoryError: "",
+            interestError: "",
+
         };
     },
 
@@ -286,6 +406,16 @@ export default {
             this.passwordError = "";
             this.confirmPasswordError = "";
             this.capsLockOn = false;
+
+            this.edit_user_category = "";
+            this.edit_interest_1 = "";
+            this.edit_interest_2 = "";
+            this.edit_interest_3 = "";
+            this.edit_interest_4 = "";
+            this.edit_interest_5 = "";
+            this.categoryError = "";
+            this.interestError = "";
+
         },
 
 
@@ -327,11 +457,88 @@ export default {
         },
 
 
+        // editProfile() {
+        //     this.passwordError = "";
+        //     this.confirmPasswordError = "";
+
+        //     const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
+
+        //     if (wantsPasswordChange) {
+        //         this.passwordError = this.validatePasswordRules(this.edit_password);
+        //         if (this.passwordError) return;
+
+        //         if (this.edit_password !== this.edit_password_confirmation) {
+        //             this.confirmPasswordError = "Passwords do not match.";
+        //             return;
+        //         }
+        //     }
+
+        //     const payload = {
+        //         id: this.user_id,
+        //         logo: this.logo,
+        //     };
+
+        //     if (wantsPasswordChange) {
+        //         payload.password = this.edit_password;
+        //         payload.password_confirmation = this.edit_password_confirmation;
+        //     }
+
+        //     axios.put("/admin/update/user", payload)
+        //         .then((res) => {
+        //             console.log("UPDATE RESPONSE:", res.status, res.data);
+
+        //             const ok = res.status === 200 && res.data && res.data.success === true;
+        //             console.log("OK VALUE:", ok);
+
+        //             if (ok) {
+        //                 if (res.data.image_url) {
+        //                     this.myProfile.image_url = res.data.image_url;
+        //                     this.image_url = res.data.image_url;
+        //                 }
+
+        //                 $("#edit_cancel").click();
+
+        //                 this.reset();
+        //                 this.fetchMyProfile();
+
+
+        //                 Swal.fire({
+        //                     icon: "success",
+        //                     title: this.$t("Successfully_Updated"),
+        //                     showConfirmButton: false,
+        //                     timer: 1500,
+        //                 });
+
+        //                 return;
+        //             }
+
+        //             Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        //         })
+        //         .catch((err) => {
+        //             console.log("CATCH BLOCK RUNNING", err);
+
+        //             if (err.response && err.response.status === 422) {
+        //                 const ve = err.response.data.errors || {};
+        //                 if (ve.password) this.passwordError = ve.password[0];
+        //                 if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
+        //             }
+
+        //             Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+        //         });
+        // },
+
+
         editProfile() {
             this.passwordError = "";
             this.confirmPasswordError = "";
+            this.categoryError = "";
+            this.interestError = "";
 
             const wantsPasswordChange = this.edit_password && this.edit_password.length > 0;
+
+            if (!this.validateProfileOptions()) {
+                return;
+            }
 
             if (wantsPasswordChange) {
                 this.passwordError = this.validatePasswordRules(this.edit_password);
@@ -346,6 +553,14 @@ export default {
             const payload = {
                 id: this.user_id,
                 logo: this.logo,
+                // user_category: this.edit_user_category,
+                event_interests: [
+                    this.edit_interest_1,
+                    this.edit_interest_2,
+                    this.edit_interest_3,
+                    this.edit_interest_4,
+                    this.edit_interest_5,
+                ].filter(item => item && item.trim() !== ""),
             };
 
             if (wantsPasswordChange) {
@@ -355,10 +570,7 @@ export default {
 
             axios.put("/admin/update/user", payload)
                 .then((res) => {
-                    console.log("UPDATE RESPONSE:", res.status, res.data);
-
                     const ok = res.status === 200 && res.data && res.data.success === true;
-                    console.log("OK VALUE:", ok);
 
                     if (ok) {
                         if (res.data.image_url) {
@@ -371,7 +583,6 @@ export default {
                         this.reset();
                         this.fetchMyProfile();
 
-
                         Swal.fire({
                             icon: "success",
                             title: this.$t("Successfully_Updated"),
@@ -382,18 +593,26 @@ export default {
                         return;
                     }
 
-                    Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+                    Swal.fire({
+                        icon: "error",
+                        title: this.$t("error"),
+                        text: this.$t("profile_update_unsuccessfull"),
+                    });
                 })
                 .catch((err) => {
-                    console.log("CATCH BLOCK RUNNING", err);
-
                     if (err.response && err.response.status === 422) {
                         const ve = err.response.data.errors || {};
                         if (ve.password) this.passwordError = ve.password[0];
                         if (ve.password_confirmation) this.confirmPasswordError = ve.password_confirmation[0];
+                        if (ve.user_category) this.categoryError = ve.user_category[0];
+                        if (ve.event_interests) this.interestError = ve.event_interests[0];
                     }
 
-                    Swal.fire(this.$t("error"), this.$t("profile_update_unsuccessfull"), this.$t("error"));
+                    Swal.fire({
+                        icon: "error",
+                        title: this.$t("error"),
+                        text: this.$t("profile_update_unsuccessfull"),
+                    });
                 });
         },
         validatePasswordRules(password) {
@@ -426,32 +645,196 @@ export default {
             this.fetchMyProfile();
         },
 
+        // fetchMyProfile() {
+        //     axios.get("/admin/fetch/user?me=1")
+        //         .then((res) => {
+        //             const u = res.data;
+
+        //             this.myProfile = {
+        //                 id: u.id,
+        //                 name: u.name,
+        //                 email: u.email,
+        //                 image_url: u.image_url,
+        //             };
+
+        //             this.edit_id = u.id;
+        //             this.edit_name = u.name;
+        //             this.edit_email = u.email;
+
+        //             this.image_url = u.image_url;
+        //             this.logo = null;
+
+
+        //             this.edit_password = "";
+        //             this.edit_password_confirmation = "";
+        //             this.passwordError = "";
+        //             this.confirmPasswordError = "";
+        //         })
+        //         .catch((err) => console.log(err));
+        // },
+
         fetchMyProfile() {
             axios.get("/admin/fetch/user?me=1")
                 .then((res) => {
                     const u = res.data;
+
+                    // this.myProfile = {
+                    //     id: u.id,
+                    //     name: u.name,
+                    //     email: u.email,
+                    //     image_url: u.image_url,
+                    // };
 
                     this.myProfile = {
                         id: u.id,
                         name: u.name,
                         email: u.email,
                         image_url: u.image_url,
+                        user_category: u.user_category,
+                        event_interests: u.event_interests || [],
                     };
-
                     this.edit_id = u.id;
                     this.edit_name = u.name;
                     this.edit_email = u.email;
+                    this.edit_user_category = u.user_category || "";
+
+                    const interests = u.event_interests || [];
+
+                    this.edit_interest_1 = interests[0] || "";
+                    this.edit_interest_2 = interests[1] || "";
+                    this.edit_interest_3 = interests[2] || "";
+                    this.edit_interest_4 = interests[3] || "";
+                    this.edit_interest_5 = interests[4] || "";
 
                     this.image_url = u.image_url;
                     this.logo = null;
-
 
                     this.edit_password = "";
                     this.edit_password_confirmation = "";
                     this.passwordError = "";
                     this.confirmPasswordError = "";
+                    this.categoryError = "";
+                    this.interestError = "";
                 })
                 .catch((err) => console.log(err));
+        },
+
+        validateProfileOptions() {
+            this.categoryError = "";
+            this.interestError = "";
+
+            if (!this.edit_user_category) {
+                this.categoryError = "Please select a user category.";
+                return false;
+            }
+
+            const interests = [
+                this.edit_interest_1,
+                this.edit_interest_2,
+                this.edit_interest_3,
+                this.edit_interest_4,
+                this.edit_interest_5,
+            ].filter(item => item && item.trim() !== "");
+
+            if (interests.length < 1) {
+                this.interestError = "Please select at least 1 event interest.";
+                return false;
+            }
+
+            const unique = [...new Set(interests)];
+            if (unique.length !== interests.length) {
+                this.interestError = "Please do not select the same interest more than once.";
+                return false;
+            }
+
+            return true;
+        },
+
+        getInterestRank(index) {
+            const ranks = [
+                "Highest Interest",
+                "2nd Priority",
+                "3rd Priority",
+                "4th Priority",
+                "Lowest Priority"
+            ];
+
+            return ranks[index] || `Priority ${index + 1}`;
+        },
+
+        getInterestIcon(interest) {
+            const icons = {
+                Food: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 2v7c0 2.2 1.8 4 4 4h1v9"></path>
+                <path d="M7 2v20"></path>
+                <path d="M21 15V2a5 5 0 0 0-5 5v8c0 1.1.9 2 2 2h3z"></path>
+            </svg>
+        `,
+                Sports: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M4.93 4.93l4.24 4.24"></path>
+                <path d="M14.83 9.17l4.24-4.24"></path>
+                <path d="M14.83 14.83l4.24 4.24"></path>
+                <path d="M9.17 14.83l-4.24 4.24"></path>
+                <circle cx="12" cy="12" r="4"></circle>
+            </svg>
+        `,
+                Music: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        `,
+                Art: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22a10 10 0 1 1 10-10c0 1.38-1.12 2.5-2.5 2.5H17a2 2 0 0 0-2 2
+                         2 2 0 0 0 2 2h1"></path>
+                <circle cx="7.5" cy="10.5" r=".5"></circle>
+                <circle cx="12" cy="7.5" r=".5"></circle>
+                <circle cx="16.5" cy="10.5" r=".5"></circle>
+            </svg>
+        `,
+                Technology: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="12" rx="2"></rect>
+                <path d="M8 20h8"></path>
+                <path d="M12 16v4"></path>
+            </svg>
+        `,
+                Networking: `
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="3"></circle>
+                <circle cx="5" cy="19" r="3"></circle>
+                <circle cx="19" cy="19" r="3"></circle>
+                <path d="M12 8v4"></path>
+                <path d="M12 12 6.5 16"></path>
+                <path d="M12 12 17.5 16"></path>
+            </svg>
+        `
+            };
+
+            return icons[interest] || `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+        </svg>
+    `;
         },
     }
 
