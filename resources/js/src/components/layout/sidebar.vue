@@ -12,7 +12,7 @@
                 suppressScrollX: true,
             }">
                 <!-- Dashboard -->
-                <router-link tag="li" to="/dashboard" class="menu" @click.native="toggleMobileMenu">
+                <router-link tag="li" to="/dashboard" class="menu" @click.native="toggleMobileMenu " >
                     <a class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

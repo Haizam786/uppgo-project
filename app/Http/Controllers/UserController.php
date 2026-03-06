@@ -134,7 +134,7 @@ class UserController extends Controller
             ],
             'logo' => ['nullable', 'string'],
             // 'user_category' => ['required', 'in:nation,non_nation'],
-            'event_interests' => ['required', 'array', 'min:1'],
+            'event_interests' => ['nullable', 'array', 'min:1'],
         ], [
             'password.regex' => 'Password must contain at least 8 characters, 2 uppercase letters, 2 numbers, and 2 symbols.',
         ]);
@@ -155,7 +155,7 @@ class UserController extends Controller
             ->where('active', 1)
             ->findOrFail($id);
 
-        $user->user_category = $request->user_category;
+        // $user->user_category = $request->user_category;
         $user->event_interests = $request->event_interests;
 
 

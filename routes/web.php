@@ -59,9 +59,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::get('/fetch/user-counts', [UserController::class, 'getUserCounts']);
 
 
-    //Routes related to organisations
-    Route::get('/fetch/organisations', [OrganisationDetailsController::class, 'index']);
-    Route::put('/update/profile', [OrganisationDetailsController::class, 'update']);
+   
 
 
     //Route related to activity logs
