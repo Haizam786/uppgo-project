@@ -18,7 +18,7 @@ use App\Http\Controllers\UserController;
 |
 */
 
-//Redirect routes
+
 Route::get('/', function () {
     return redirect(route('dashboard'));
 });
@@ -37,19 +37,19 @@ Route::get('/profile', function () {
     return redirect(route('dashboard'));
 });
 
-//Auth routes
+
 Auth::routes(['register' => true]);
 
 
 
-//Dashboard
+
 Route::get('/dashboard', [AppController::class, 'index'])->name('dashboard');
 
 
-//All the backend routes will be defined here...
+
 Route::prefix('/admin')->name('admin.')->group(function () {
 
-    //user user related routes
+
     Route::get('/fetch/user', [UserController::class, 'index']);
     Route::post('/create/user', [UserController::class, 'store']);
     Route::put('/update/user', [UserController::class, 'update']);
@@ -59,10 +59,12 @@ Route::prefix('/admin')->name('admin.')->group(function () {
     Route::get('/fetch/user-counts', [UserController::class, 'getUserCounts']);
 
 
-   
 
-
-    //Route related to activity logs
     Route::get('/fetch/activities', [ActivitiesController::class, 'fetchActivities']);
     Route::get('/fetch/mail-logs', [ActivitiesController::class, 'fetchMailLogs']);
 });
+
+
+Route::get('/app/{any?}', function () {
+    return view('react');
+})->where('any', '.*');

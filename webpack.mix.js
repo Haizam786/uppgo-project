@@ -5,17 +5,12 @@ const path = require("path");
  |--------------------------------------------------------------------------
  | Mix Asset Management
  |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
  */
+
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css');
-
 
 
 mix.js("resources/js/src/main.js", "public/js")
@@ -30,24 +25,20 @@ mix.js("resources/js/src/main.js", "public/js")
             },
         },
         module: {
-            rules: [
-                {
-                    test: /\.s[ac]ss$/i,
-                    use: [
-                        {
-                            loader: "sass-loader",
-                            options: {
-                                sassOptions: {
-                                    includePaths: [
-                                        "node_modules",
-                                        "resources/js/src/assets",
-                                    ],
-                                },
-                            },
+            rules: [{
+                test: /\.s[ac]ss$/i,
+                use: [{
+                    loader: "sass-loader",
+                    options: {
+                        sassOptions: {
+                            includePaths: [
+                                "node_modules",
+                                "resources/js/src/assets",
+                            ],
                         },
-                    ],
-                },
-            ],
+                    },
+                }, ],
+            }, ],
         },
     })
     .override((webpackConfig) => {
@@ -72,12 +63,20 @@ mix.js("resources/js/src/main.js", "public/js")
     .vue({ version: 2 })
     .version();
 
+mix.js('resources/react/main.jsx', 'public/js/react-app.js')
+    .react();
+
+mix.postCss('resources/react/index.css', 'public/css/react-app.css', [
+    require('tailwindcss'),
+    require('autoprefixer'),
+]);
+
+
 mix.webpackConfig({
     output: {
         chunkFilename: "js/chunks/[name].[chunkhash].js",
     },
     resolve: {
-        extensions: ['.js', '.vue'],
+        extensions: ['.js', '.jsx', '.vue'],
     },
 });
-
