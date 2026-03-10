@@ -19,19 +19,25 @@ use App\Http\Controllers\UserController;
 */
 
 
+// Route::get('/', function () {
+//     return redirect(route('dashboard'));
+// });
+
+// Route::get('/user/create', function () {
+//     return redirect(route('dashboard'));
+// });
+
+// Route::get('/user/view', function () {
+//     return redirect(route('dashboard'));
+// });
+
 Route::get('/', function () {
-    return redirect(route('dashboard'));
+    return view('react');
 });
 
-
-
-Route::get('/user/create', function () {
-    return redirect(route('dashboard'));
-});
-
-Route::get('/user/view', function () {
-    return redirect(route('dashboard'));
-});
+Route::get('/{any}', function () {
+    return view('react');
+})->where('any', '^(?!admin|dashboard|login|register|password).*$');
 
 Route::get('/profile', function () {
     return redirect(route('dashboard'));
@@ -65,6 +71,3 @@ Route::prefix('/admin')->name('admin.')->group(function () {
 });
 
 
-Route::get('/app/{any?}', function () {
-    return view('react');
-})->where('any', '.*');

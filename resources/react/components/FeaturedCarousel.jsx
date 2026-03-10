@@ -12,11 +12,13 @@ function FeaturedCarousel() {
 
   const minSwipeDistance = 50;
 
-  useEffect(() => {
-    api.get("/events?featured=1").then((res) => {
-      setEvents(res.data);
-    });
-  }, []);
+  api.get("/events?featured=1").then((res) => {
+
+    const data = res.data.data || res.data;
+
+    setEvents(Array.isArray(data) ? data : []);
+
+  });
 
   useEffect(() => {
 
@@ -126,11 +128,10 @@ function FeaturedCarousel() {
           <button
             key={index}
             onClick={() => setCurrent(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              current === index
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${current === index
                 ? "bg-white scale-125"
                 : "bg-white/40 hover:bg-white"
-            }`}
+              }`}
           />
 
         ))}

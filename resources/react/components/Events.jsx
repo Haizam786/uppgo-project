@@ -10,13 +10,19 @@ function Events() {
   const [eventTypeFilter, setEventTypeFilter] = useState("All");
 
   useEffect(() => {
+
     api.get("/events")
       .then((res) => {
-        setEvents(res.data);
+
+        const data = res.data.data || res.data;
+
+        setEvents(Array.isArray(data) ? data : []);
+
       })
       .catch((err) => {
         console.error(err);
       });
+
   }, []);
 
   const categories = [
@@ -36,9 +42,15 @@ function Events() {
 
   const filteredEvents = events.filter((event) => {
 
+    // const matchesSearch =
+    //   event.title.toLowerCase().includes(search.toLowerCase()) ||
+    //   event.location.toLowerCase().includes(search.toLowerCase());
+    
     const matchesSearch =
-      event.title.toLowerCase().includes(search.toLowerCase()) ||
-      event.location.toLowerCase().includes(search.toLowerCase());
+      (event.title || "").toLowerCase().includes(search.toLowerCase()) ||
+      (event.location || "").toLowerCase().includes(search.toLowerCase());
+
+
 
     const matchesCategory =
       categoryFilter === "All" ||
@@ -77,11 +89,10 @@ function Events() {
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-4 py-2 rounded-full border ${
-                categoryFilter === cat
-                  ? "bg-black text-white"
-                  : "bg-white"
-              }`}
+              className={`px-4 py-2 rounded-full border ${categoryFilter === cat
+                ? "bg-black text-white"
+                : "bg-white"
+                }`}
             >
               {cat}
             </button>

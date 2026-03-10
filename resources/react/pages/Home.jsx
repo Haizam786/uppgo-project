@@ -6,8 +6,7 @@ import FeaturedCarousel from "../components/FeaturedCarousel";
 function Home() {
   return (
     <>
-    
-      {/*<Hero />*/}
+      <Hero />
       <FeaturedCarousel />
       <Explore />
       <Events />
